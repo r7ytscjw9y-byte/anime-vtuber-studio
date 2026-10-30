@@ -1,7 +1,0 @@
-VTuber Anime Studio 1.8 – iPad / Windows
-
-In GitHub im Repository-Hauptverzeichnis die Datei index.html und den Ordner assets mit der enthaltenen anime_start.png hochladen. Dateien einzeln ersetzen, Ordnerstruktur beibehalten. GitHub Pages /main/(root) nutzen.
-
-Neue Testschalter: Blinzeln testen und Mund testen. Gesichtserkennung bleibt MediaPipe 0.10.34. Die Zeichenüberlagerungen sind Prototypen: für hochwertige Augen-/Mundbewegung bitte separate transparente PNG-Ebenen verwenden.
-
-Beim öffentlichen GitHub Pages-Projekt sind Quellcode und hochgeladene Startbilder öffentlich; private Charaktere über den Upload der laufenden App laden, nicht ins GitHub-Repository legen.

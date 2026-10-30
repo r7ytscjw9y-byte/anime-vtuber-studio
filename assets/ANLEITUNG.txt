@@ -1,0 +1,9 @@
+VTuber Anime Studio 2.0
+
+Neu: Testknöpfe direkt am Bildfenster, damit Augen und Mund sichtbar getestet werden können.
+
+Hochladen auf GitHub:
+1. ZIP entpacken
+2. index.html und Ordner assets in das Repository hochladen
+3. Änderungen übernehmen
+4. iPad Safari neu laden

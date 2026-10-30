@@ -1,0 +1,6 @@
+VTuber Anime Studio 2.1 – iPad-Test
+
+Neu: Testknöpfe ganz oben ÜBER dem Bild. Knöpfe halten den Zustand fest, bis erneut getippt oder Normal gedrückt wird. Linkes und rechtes Auge werden im Test unabhängig geschlossen; Mundtest hält geöffnet/geschlossen.
+
+Installation: index.html + assets/anime_start.png in das GitHub-Repository hochladen und Änderungen übernehmen. Safari neu laden.
+Hinweis: Dies ist eine animierte Überlagerung einer flachen Anime-Gesamtzeichnung, kein professionell geriggtes 2D-Modell. Bei ausgetauschten Vollbildern funktionieren die voreingestellten Gesichts-Koordinaten nicht automatisch.

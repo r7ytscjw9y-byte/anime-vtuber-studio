@@ -1,0 +1,110 @@
+<!doctype html><html lang="de"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>VTuber Anime Studio 2.1</title><style>body{font-family:system-ui;background:#121526;color:#f3f4ff;margin:0}header{padding:16px 22px;background:#222744}main{display:grid;grid-template-columns:minmax(300px,960px) 290px;gap:16px;padding:16px}canvas{width:100%;background:#2b3355;border-radius:16px;aspect-ratio:16/9}button,select{padding:12px;border:0;border-radius:9px;margin:5px;background:#6977f6;color:white;font-weight:600;cursor:pointer}button:disabled{opacity:.45}aside{background:#222744;padding:14px;border-radius:14px}video{width:100%;max-height:170px;transform:scaleX(-1);border-radius:9px}#status{color:#b5c7fb;min-height:2em}label{display:block;padding-top:12px}input[type=range]{width:100%}input[type=file]{max-width:100%;font-size:13px}.stageWrap{position:relative}.quickbar{display:flex;gap:7px;flex-wrap:wrap;align-items:center;background:#222744;border:1px solid #474d78;border-radius:12px;padding:9px 10px;margin-bottom:8px}.quickbar .qtitle{font-size:12px;color:#cfd7ff;margin-right:4px}.quickbar button{margin:0;padding:10px 11px;font-size:13px;border-radius:8px}.quickbar button[aria-pressed="true"]{background:#16a3a5;color:#051b21;outline:2px solid #a9f9ec}.actionbar{display:flex;flex-wrap:wrap}.pill{background:#30375a;border-radius:12px;padding:10px;margin-top:10px} .pill strong{display:block;margin-bottom:8px} .pill input{display:block;margin-bottom:7px} .pill button{font-size:12px;padding:9px} .hint{font-size:12px;color:#becafa} small{color:#bfc5dc}@media(max-width:850px){main{grid-template-columns:1fr}}@media(max-width:640px){header{padding:14px 16px}main{padding:12px}.quickbar{padding:8px;position:sticky;top:0;z-index:5}.quickbar .qtitle{width:100%;margin-bottom:2px}.quickbar button{flex:1 1 auto;min-width:82px}} </style></head><body><header><b>🎬 VTuber Anime Studio 2.1</b> · Gesicht, Stimme und Videoaufnahme</header><main><section><div class="quickbar" role="group" aria-label="Gesichtsanimation testen"><span class="qtitle">Animation testen (antippen = an/aus):</span><button id="quickLeft" aria-pressed="false">👁 Links</button><button id="quickRight" aria-pressed="false">👁 Rechts</button><button id="quickBlink" aria-pressed="false">😉 Beide</button><button id="quickMouth" aria-pressed="false">🗣 Mund</button><button id="quickReset">↺ Normal</button></div><div class="stageWrap"><canvas id="stage" width="1280" height="720"></canvas></div><div class="actionbar"><button id="start">🎥 Kamera & Mikrofon starten</button><button id="rec" disabled>⏺ Aufnahme</button><button id="stop" disabled>⏹ Stoppen & speichern</button></div><p id="status">Version 2.1 · Bereit. Für iPad Kamera-Zugriff über HTTPS öffnen; auf Windows über localhost.</p><small>Testleiste oben: Augen und Mund bleiben bis zum nächsten Tippen im Testzustand. Die Vorschau und Aufnahme zeigen die VTuber-Szene – nicht dein Kamerabild. Export als WebM oder MP4, je nach Browser-Unterstützung.</small></section><aside><strong>🎨 Deine Anime-Figur</strong><div class="pill"><strong>Einfach: Eigene Figur als PNG</strong><input id="avatar" type="file" accept="image/png,image/webp,image/jpeg"><button id="remove">Anime-Startfigur anzeigen</button><p class="hint">Das Bild ersetzt die Startfigur; die komplette Figur folgt deinem Kopf. Am besten ein freigestelltes PNG mit transparentem Hintergrund.</p></div><div class="pill"><strong>Erweitert: Bewegliche Bild-Ebenen</strong><label>Körper <input id="bodyFile" type="file" accept="image/png,image/webp"></label><label>Kopf <input id="headFile" type="file" accept="image/png,image/webp"></label><label>Augen offen <input id="eyesOpenFile" type="file" accept="image/png,image/webp"></label><label>Augen geschlossen <input id="eyesClosedFile" type="file" accept="image/png,image/webp"></label><label>Mund geschlossen <input id="mouthClosedFile" type="file" accept="image/png,image/webp"></label><label>Mund offen <input id="mouthOpenFile" type="file" accept="image/png,image/webp"></label><button id="export">💾 Charakter speichern</button><label>Charakter-Datei laden <input id="import" type="file" accept="application/json,.json"></label><p class="hint">Für getrenntes Blinzeln bei eigenen Figuren werden einzelne linke/rechte Augen-PNGs in einer künftigen Editor-Version benötigt. Bei Ebenen müssen die PNGs transparent und passend ausgerichtet sein. Die Speicherdatei enthält die importierten Bilder.</p></div><p class="hint">Bei der Startfigur werden Augen und Mund durch gezeichnete Überlagerungen animiert (erste Testversion). Für präzise Animationen bitte transparente Augen- und Mund-Ebenen hochladen. Der Start-Anime enthält bereits eine gezeichnete Handpose, die sich nicht einzeln bewegt.</p><strong>Steuerung</strong><label>Hintergrund <select id="bg"><option value="studio">Studio</option><option value="green">Greenscreen</option><option value="plain">Dunkel</option></select></label><label>Figurgröße <input id="size" type="range" min="0.45" max="1.45" step="0.05" value="1"></label><label>Blinzel-Empfindlichkeit <input id="blinkGain" type="range" min="0.2" max="2.5" step="0.1" value="1"></label><label><input type="checkbox" id="animateFeatures" checked> Augen und Mund der Startfigur animieren</label><div class="pill"><strong>Animations-Test (an/aus, auch bei laufender Kamera)</strong><button id="testLeft">👁 Linkes Auge</button><button id="testRight">👁 Rechtes Auge</button><button id="testBlink">😉 Beide Augen</button><button id="testMouth">🗣 Mund testen</button><label>Mund manuell testen <input id="manualMouth" type="range" min="0" max="1" step="0.02" value="0"></label><p class="hint" id="signals">Links: — · Rechts: — · Mund: —</p></div><label>Mundempfindlichkeit <input id="gain" type="range" min="1" max="8" step="0.25" value="3.5"></label><label>Kameravorschau</label><video id="cam" playsinline muted autoplay></video><p><small>Gesicht folgt Kamera; Mund reagiert auf Stimme und Mimik. Falls er nicht reagiert, den Mund-Test und Mundempfindlichkeit verwenden. Bewege deinen Kopf und sprich!</small></p><p><small>Kostenlos, keine Anmeldung. Für die Gesichtserkennung wird beim ersten Start MediaPipe aus dem Internet geladen.</small></p></aside></main><script type="module">
+// Die Zeichenoberfläche startet ohne externe Bibliothek. MediaPipe wird bei Kamerastart geladen.
+let FaceLandmarker, FilesetResolver;
+const $=id=>document.getElementById(id), canvas=$('stage'),ctx=canvas.getContext('2d');let stream,face,audioCtx,analyser,source,recording=false,recorder,chunks=[],running=false,lastTime=-1,blinkTestUntil=0,leftTestUntil=0,rightTestUntil=0,mouthTestUntil=0;const mood={x:0,y:0,tilt:0,mouth:0,blinkL:0,blinkR:0};const manualTest={left:null,right:null,mouth:null};const setStatus=t=>$('status').textContent=t;const lerp=(a,b,n)=>a+(b-a)*n;function rounded(x,y,w,h,r,fill){ctx.fillStyle=fill;ctx.beginPath();ctx.roundRect(x,y,w,h,r);ctx.fill()}
+const defaultAvatar=new Image();defaultAvatar.onload=()=>setStatus('✅ Anime-Startfigur geladen. Kamera ist optional.');defaultAvatar.onerror=()=>setStatus('⚠️ Startbild konnte nicht geladen werden. Die Ersatzfigur wird angezeigt.');defaultAvatar.src='./assets/anime_start.png';const assets={};const assetNames=['avatar','bodyFile','headFile','eyesOpenFile','eyesClosedFile','mouthClosedFile','mouthOpenFile'];
+function loadAsset(key,src){return new Promise((resolve,reject)=>{const im=new Image();im.onload=()=>{assets[key]={src,img:im};resolve()};im.onerror=reject;im.src=src})}
+for(const id of assetNames){$(id).addEventListener('change',async e=>{const f=e.target.files?.[0];if(!f)return;if(f.size>12*1024*1024){setStatus('Bild größer als 12 MB, bitte verkleinern.');return}const reader=new FileReader();reader.onload=async()=>{try{await loadAsset(id,reader.result);if(id==='avatar'){for(const key of assetNames.filter(k=>k!=='avatar'))delete assets[key]}else delete assets.avatar;setStatus('✅ Bild geladen: '+f.name)}catch(e){setStatus('Bild konnte nicht geladen werden.')}};reader.readAsDataURL(f)})}
+function refreshTestButtons(){
+  const state={quickLeft:manualTest.left===1,quickRight:manualTest.right===1,quickBlink:manualTest.left===1&&manualTest.right===1,quickMouth:manualTest.mouth===1};
+  for(const [id,on] of Object.entries(state))$(id).setAttribute('aria-pressed',on?'true':'false');
+}
+function setEyeTest(which){
+  if(which==='both'){const on=!(manualTest.left===1&&manualTest.right===1);manualTest.left=on?1:null;manualTest.right=on?1:null}
+  else{const on=manualTest[which]!==1;manualTest.left=which==='left'?(on?1:0):0;manualTest.right=which==='right'?(on?1:0):0}
+  refreshTestButtons();setStatus('Augentest: '+(manualTest.left===1?'links geschlossen ':'')+(manualTest.right===1?'rechts geschlossen':'')+'. Normal setzt die Kamerasteuerung zurück.');
+}
+$('quickLeft').onclick=()=>setEyeTest('left');$('quickRight').onclick=()=>setEyeTest('right');$('quickBlink').onclick=()=>setEyeTest('both');
+$('quickMouth').onclick=()=>{manualTest.mouth=manualTest.mouth===1?0:1;refreshTestButtons();setStatus('Mundtest: '+(manualTest.mouth===1?'offen':'geschlossen')+' – bleibt bis zum nächsten Tippen so.');};
+$('quickReset').onclick=()=>{manualTest.left=null;manualTest.right=null;manualTest.mouth=null;$('manualMouth').value='0';refreshTestButtons();setStatus('Normale Gesichtssteuerung aktiv.');};
+$('testLeft').onclick=()=>$('quickLeft').click();$('testRight').onclick=()=>$('quickRight').click();$('testBlink').onclick=()=>$('quickBlink').click();$('testMouth').onclick=()=>$('quickMouth').click();
+
+$('remove').onclick=()=>{for(let key of assetNames)delete assets[key];for(let key of assetNames)$(key).value='';setStatus('Anime-Startfigur aktiv.')} ;
+$('export').onclick=()=>{const state={version:1,assets:Object.fromEntries(Object.entries(assets).map(([k,v])=>[k,v.src]))};const blob=new Blob([JSON.stringify(state)],{type:'application/json'});let url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='Mein_Anime_Charakter.json';a.click();setTimeout(()=>URL.revokeObjectURL(url),2000)};
+$('import').onchange=async e=>{try{const f=e.target.files?.[0];if(!f)return;const data=JSON.parse(await f.text());if(data.version!==1||!data.assets)throw Error('Unbekanntes Format');for(const k of assetNames)delete assets[k];for(const [key,src] of Object.entries(data.assets)){if(!assetNames.includes(key)||typeof src!=='string'||!src.startsWith('data:image/')||src.length>20000000)continue;await loadAsset(key,src)}setStatus('✅ Charakter geladen.')}catch(e){setStatus('Fehler beim Laden: '+e.message)}};
+function layer(key,x,y,w,h){const img=assets[key]?.img;if(!img)return false;ctx.drawImage(img,x,y,w,h);return true}
+// Einfache Animationsüberlagerungen auf dem unveränderten Startbild.
+// Die Originalillustration ist flach; für saubere Gesichtsmimik sind später echte PNG-Sprites nötig.
+function animateStartFace(){
+  if(!$('animateFeatures').checked)return;
+  // Testknöpfe haben Vorrang vor den Werten der Kamera. So können beide
+  // Augen unabhängig geschlossen werden, auch während Gesichts-Tracking läuft.
+  const left=manualTest.left!==null?manualTest.left:mood.blinkL;
+  const right=manualTest.right!==null?manualTest.right:mood.blinkR;
+  const mouth=manualTest.mouth!==null?manualTest.mouth:Math.max(mood.mouth,Number($('manualMouth').value));
+  ctx.save();ctx.translate(-430,-390);ctx.scale(860/1032,585/704);
+  // Separate Lidschluss-Overlays. Augenkoordinaten beziehen sich auf das
+  // Originalbild (1032 x 704), nicht auf den gesamten 1280er Canvas.
+  const eyes=[{x:438,y:291,rx:59,ry:48,angle:-.04,value:left},
+              {x:608,y:350,rx:49,ry:38,angle:-.17,value:right}];
+  for(const eye of eyes){
+    const a=Math.max(0,Math.min(1,eye.value));if(a<.05)continue;
+    ctx.save();ctx.translate(eye.x,eye.y);ctx.rotate(eye.angle);
+    ctx.beginPath();ctx.ellipse(0,0,eye.rx,eye.ry,0,0,Math.PI*2);ctx.clip();
+    // Färbe die ganze Augenpartie in Hautfarbe, sobald das Lid schließt.
+    ctx.globalAlpha=Math.min(1,a*2.6);
+    const skin=ctx.createLinearGradient(0,-eye.ry,0,eye.ry);
+    skin.addColorStop(0,'#dd9388');skin.addColorStop(.45,'#f5b49d');skin.addColorStop(1,'#e9958d');
+    ctx.fillStyle=skin;ctx.fillRect(-eye.rx,-eye.ry,eye.rx*2,eye.ry*2);
+    ctx.globalAlpha=Math.min(1,Math.max(0,(a-.35)*1.55));
+    ctx.lineCap='round';ctx.strokeStyle='#2d2029';ctx.lineWidth=7;
+    ctx.beginPath();ctx.moveTo(-eye.rx*.84,-5);ctx.quadraticCurveTo(0,13,eye.rx*.82,-5);ctx.stroke();
+    // Kleine Wimpern
+    ctx.lineWidth=3;for(let i=0;i<3;i++){let x=-eye.rx*.7+i*eye.rx*.13;ctx.beginPath();ctx.moveTo(x,-1);ctx.lineTo(x-5,-11+i*2);ctx.stroke()}
+    ctx.restore();
+  }
+  // Vollständig übermalte ursprüngliche Mundöffnung mit weich auslaufendem
+  // Haut-Patch; neuer Mund ist geschlossen oder gut sichtbar weit geöffnet.
+  ctx.save();ctx.translate(493,430);ctx.rotate(-.12);
+  const patch=ctx.createRadialGradient(0,0,26,0,0,70);
+  patch.addColorStop(0,'#f6a38f');patch.addColorStop(.7,'#f0a08e');patch.addColorStop(1,'rgba(237,151,138,0)');
+  ctx.fillStyle=patch;ctx.beginPath();ctx.ellipse(0,0,68,57,0,0,Math.PI*2);ctx.fill();
+  const m=Math.min(1,Math.max(0,mouth));
+  if(m<.10){ctx.strokeStyle='#713344';ctx.lineWidth=4;ctx.lineCap='round';ctx.beginPath();ctx.moveTo(-31,-2);ctx.quadraticCurveTo(2,18,33,-5);ctx.stroke();}
+  else{
+    const mh=7+m*39;
+    ctx.fillStyle='#723044';ctx.beginPath();ctx.ellipse(0,4,35,mh,0,0,Math.PI*2);ctx.fill();
+    ctx.save();ctx.beginPath();ctx.ellipse(0,4,34,mh-1,0,0,Math.PI*2);ctx.clip();
+    ctx.fillStyle='#fff0e9';ctx.fillRect(-35,-mh+5,70,Math.max(5,mh*.4));
+    ctx.fillStyle='#e96b83';ctx.beginPath();ctx.ellipse(5,mh*.86,29,Math.max(4,mh*.42),0,Math.PI,Math.PI*2);ctx.fill();ctx.restore();
+    ctx.strokeStyle='#ad4a60';ctx.lineWidth=3;ctx.beginPath();ctx.ellipse(0,4,35,mh,0,0,Math.PI*2);ctx.stroke();
+  }
+  ctx.restore();ctx.restore();
+}
+
+function draw(){try {const w=1280,h=720;let bg=$('bg').value;if(bg==='green')ctx.fillStyle='#00bb00';else if(bg==='plain')ctx.fillStyle='#15172b';else{const g=ctx.createLinearGradient(0,0,w,h);g.addColorStop(0,'#252c60');g.addColorStop(1,'#78477f');ctx.fillStyle=g}ctx.fillRect(0,0,w,h);if(bg==='studio'){ctx.fillStyle='#ffffff12';for(let i=0;i<13;i++){ctx.beginPath();ctx.arc((i*213)%1280,((i*157)%720),18+i%4*11,0,Math.PI*2);ctx.fill()}rounded(50,50,250,70,15,'#141a3899');ctx.fillStyle='#fff';ctx.font='bold 32px system-ui';ctx.fillText('VTuber Studio',70,96)}
+ctx.save();ctx.translate(w/2+mood.x*165,440+mood.y*90);ctx.rotate(mood.tilt*0.7);ctx.scale(Number($('size').value),Number($('size').value));if(assets.avatar){layer('avatar',-280,-370,560,650);ctx.restore();requestAnimationFrame(draw);return}if(assets.headFile||assets.bodyFile){layer('bodyFile',-235,20,470,350);ctx.save();ctx.translate(0,-80);ctx.rotate(mood.tilt*.18);layer('headFile',-200,-220,400,410);if(mood.blinkL>.55&&assets.eyesClosedFile)layer('eyesClosedFile',-145,-80,290,100);else layer('eyesOpenFile',-145,-80,290,100);if(mood.mouth>.22&&assets.mouthOpenFile)layer('mouthOpenFile',-80,65,160,100);else layer('mouthClosedFile',-80,65,160,100);ctx.restore();ctx.restore();requestAnimationFrame(draw);return}if(defaultAvatar.complete&&defaultAvatar.naturalWidth){ctx.drawImage(defaultAvatar,-430,-390,860,585);animateStartFace();ctx.restore();requestAnimationFrame(draw);return}rounded(-180,90,360,290,130,'#7d68c8');rounded(-32,83,64,110,20,'#efb4a7');ctx.fillStyle='#3f305e';ctx.beginPath();ctx.ellipse(0,-77,193,221,0,0,Math.PI*2);ctx.fill();ctx.fillStyle='#f6c7b9';ctx.beginPath();ctx.ellipse(0,-40,149,175,0,0,Math.PI*2);ctx.fill();ctx.fillStyle='#5e4686';ctx.beginPath();ctx.ellipse(-3,-168,164,89,-.1,Math.PI,Math.PI*2);ctx.fill();ctx.beginPath();ctx.ellipse(-130,-58,47,150,.18,0,Math.PI*2);ctx.fill();ctx.beginPath();ctx.ellipse(124,-40,40,146,-.18,0,Math.PI*2);ctx.fill();for(const [x,blink] of [[-63,mood.blinkL],[63,mood.blinkR]]){ctx.fillStyle='#fff';ctx.beginPath();ctx.ellipse(x,-48,37,Math.max(2,30*(1-blink)),0,0,Math.PI*2);ctx.fill();if(blink<.9){ctx.fillStyle='#386f7e';ctx.beginPath();ctx.ellipse(x,-48,17,Math.max(2,24*(1-blink)),0,0,Math.PI*2);ctx.fill();ctx.fillStyle='#151c37';ctx.beginPath();ctx.arc(x,-48,8,0,Math.PI*2);ctx.fill()}}ctx.strokeStyle='#775061';ctx.lineWidth=5;ctx.beginPath();if(mood.mouth>.12){ctx.fillStyle='#7d3854';ctx.ellipse(0,37,27,4+mood.mouth*46,0,0,Math.PI*2);ctx.fill()}else{ctx.moveTo(-19,35);ctx.quadraticCurveTo(0,49,19,35);ctx.stroke()}ctx.restore();}catch(e){console.error('Zeichenfehler:',e);setStatus('Fehler in der Darstellung: '+e.message)}requestAnimationFrame(draw)}requestAnimationFrame(draw);
+function score(list,name){return list.find(v=>v.categoryName===name)?.score||0}function detect(){if(!running)return;if(face&&$('cam').readyState>=2&&$('cam').currentTime!==lastTime){lastTime=$('cam').currentTime;try{let r=face.detectForVideo($('cam'),performance.now());let p=r.faceLandmarks?.[0];if(p){let cx=(p[4].x-.5),cy=(p[4].y-.5),tilt=Math.atan2(p[263].y-p[33].y,p[263].x-p[33].x);mood.x=lerp(mood.x,-cx*2,.22);mood.y=lerp(mood.y,cy*2,.22);mood.tilt=lerp(mood.tilt,tilt,.22);let b=r.faceBlendshapes?.[0]?.categories||[];mood.blinkL=lerp(mood.blinkL,Math.min(1,score(b,'eyeBlinkLeft')*Number($('blinkGain').value)),.35);mood.blinkR=lerp(mood.blinkR,Math.min(1,score(b,'eyeBlinkRight')*Number($('blinkGain').value)),.35);mood.faceMouth=score(b,'jawOpen')}}catch(e){console.warn(e)}}let audio=0;if(analyser){let data=new Uint8Array(analyser.fftSize);analyser.getByteTimeDomainData(data);let sum=0;for(const v of data){const d=(v-128)/128;sum+=d*d}let rms=Math.sqrt(sum/data.length);audio=Math.min(1,Math.max(0,(rms-.007)*Number($('gain').value)*8))}mood.mouth=lerp(mood.mouth,Math.max(audio,(mood.faceMouth||0)*.85),.35);$('signals').textContent='Links: '+Math.round(mood.blinkL*100)+'% · Rechts: '+Math.round(mood.blinkR*100)+'% · Mund: '+Math.round(mood.mouth*100)+'% · Mikrofon: '+Math.round(audio*100)+'%';requestAnimationFrame(detect)}
+$('start').onclick=async()=>{try{$('start').disabled=true;setStatus('Lade Kamera und Gesichtserkennung …');stream=await navigator.mediaDevices.getUserMedia({video:{facingMode:'user',width:{ideal:640}},audio:{echoCancellation:true}});$('cam').srcObject=stream;await $('cam').play();audioCtx=new (window.AudioContext||window.webkitAudioContext)();source=audioCtx.createMediaStreamSource(stream);analyser=audioCtx.createAnalyser();analyser.fftSize=512;source.connect(analyser);$('rec').disabled=!(typeof canvas.captureStream==='function' && typeof MediaRecorder!=='undefined');
+setStatus('✅ Kamera und Mikrofon aktiv. Lade Gesichtserkennung 0.10.34 …');
+try {
+  // MediaPipe als ES-Modul laden. Die vorige UMD-Variante fand ihre Exporte nicht.
+  const VERSION='0.10.34';
+  async function loadVision() {
+    const sources=[
+      `https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@${VERSION}/vision_bundle.mjs`,
+      `https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@${VERSION}/+esm`,
+      `https://esm.sh/@mediapipe/tasks-vision@${VERSION}`
+    ];
+    let problems=[];
+    for(const url of sources){
+      try {
+        const mod=await import(url);
+        const api=(mod.FaceLandmarker && mod.FilesetResolver) ? mod : (mod.default || mod.vision);
+        if(api?.FaceLandmarker && api?.FilesetResolver) return api;
+        problems.push(new URL(url).hostname+': Exporte fehlen');
+      }catch(err){problems.push(new URL(url).hostname+': '+(err?.message||String(err)))}
+    }
+    throw new Error('MediaPipe 0.10.34 konnte nicht geladen werden ('+problems.join(' | ').slice(0,340)+')');
+  }
+  ({FaceLandmarker,FilesetResolver}=await loadVision());
+  setStatus('✅ Kamera aktiv. Gesichtserkennung wird eingerichtet …');
+  const files=await FilesetResolver.forVisionTasks(`https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@${VERSION}/wasm`);
+  const opts={baseOptions:{modelAssetPath:'https://storage.googleapis.com/mediapipe-models/face_landmarker/face_landmarker/float16/1/face_landmarker.task',delegate:'GPU'},runningMode:'VIDEO',numFaces:1,outputFaceBlendshapes:true};
+  try{face=await FaceLandmarker.createFromOptions(files,opts)}catch(gpuError){console.warn('GPU nicht verfügbar, versuche CPU',gpuError);opts.baseOptions.delegate='CPU';face=await FaceLandmarker.createFromOptions(files,opts)}
+  setStatus('✅ Kamera und Gesichtserkennung aktiv. Bewege deinen Kopf!');
+}catch(e){console.error(e);setStatus('⚠️ Kamera aktiv, Gesichtserkennung nicht geladen: '+e.message+'. Figur bleibt sichtbar; schicke mir diese Meldung.')}
+running=true;detect();}catch(e){setStatus('Start fehlgeschlagen: '+e.message+' (HTTPS bzw. localhost nötig; Kamera-Freigabe prüfen)');$('start').disabled=false}}
+$('rec').onclick=()=>{try{const types=['video/mp4;codecs=avc1.42E01E,mp4a.40.2','video/webm;codecs=vp9,opus','video/webm'];const type=types.find(t=>MediaRecorder.isTypeSupported(t));let videoStream=canvas.captureStream(30);let mix=new MediaStream([...videoStream.getVideoTracks(),...stream.getAudioTracks()]);chunks=[];recorder=new MediaRecorder(mix,type?{mimeType:type}:undefined);recorder.ondataavailable=e=>{if(e.data.size)chunks.push(e.data)};recorder.onstop=()=>{let format=recorder.mimeType.includes('mp4')?'mp4':'webm';const blob=new Blob(chunks,{type:recorder.mimeType});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download='VTuber_Aufnahme_'+new Date().toISOString().replace(/[:.]/g,'-')+'.'+format;a.click();setTimeout(()=>URL.revokeObjectURL(url),60000);setStatus('Aufnahme abgeschlossen. Datei wurde zum Speichern angeboten.')};recorder.start(1000);recording=true;$('rec').disabled=true;$('stop').disabled=false;setStatus('🔴 Aufnahme läuft …')}catch(e){setStatus('Aufnahme nicht verfügbar: '+e.message)}};
+$('stop').onclick=()=>{if(recording&&recorder?.state==='recording'){recorder.stop();recording=false;$('rec').disabled=false;$('stop').disabled=true}}
+</script></body></html>
